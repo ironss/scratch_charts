@@ -1,0 +1,55 @@
+
+
+
+addlayer () 
+{
+
+(
+cat <<EOF
+BEGIN TRANSACTION;
+EOF
+
+sqlite3 $1/OruxMapsImages.db .d | 
+grep "INSERT INTO \"tiles\" VALUES([[:digit:]]\+,[[:digit:]]\+,$2"
+
+cat <<EOF
+COMMIT;
+EOF
+
+) | sqlite3 OruxMapsImages.db
+
+}
+
+
+
+
+rm OruxMapsImages.db
+
+(cat <<EOF
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE tiles (x int, y int, z int, image blob, PRIMARY KEY (x,y,z));
+COMMIT;
+EOF
+) | sqlite3 OruxMapsImages.db
+
+
+
+addlayer NZ63      12
+addlayer NZ632     14
+addlayer NZ6321    15
+addlayer NZ6321_1  17
+#addlayer NZ6324    15
+#addlayer NZ6324_1  16
+
+(
+cat <<EOF
+BEGIN TRANSACTION;
+CREATE TABLE android_metadata (locale TEXT);
+INSERT INTO "android_metadata" VALUES('en_NZ');
+CREATE INDEX IND on tiles (x,y,z);
+COMMIT;
+EOF
+
+) | sqlite3 OruxMapsImages.db
+

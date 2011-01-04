@@ -1,0 +1,14 @@
+NZ63      200000   13  12
+NZ632      75000   15  14
+NZ6321     25000   16  15
+NZ6321_1    7500   18  17
+NZ6324     30000   16  15
+NZ6324_1   15000   17  16
+
+
+
+
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE tiles (x int, y int, z int, image blob, PRIMARY KEY (x,y,z));
+
