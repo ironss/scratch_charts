@@ -1,22 +1,24 @@
 
-
+SQLITE3=/usr/bin/sqlite3
 
 addlayer () 
 {
+
+echo "$1 $2"
 
 (
 cat <<EOF
 BEGIN TRANSACTION;
 EOF
 
-sqlite3 $1/OruxMapsImages.db .d | 
+$SQLITE3 $1/OruxMapsImages.db .d | 
 grep "INSERT INTO \"tiles\" VALUES([[:digit:]]\+,[[:digit:]]\+,$2"
 
 cat <<EOF
 COMMIT;
 EOF
 
-) | sqlite3 OruxMapsImages.db
+) | $SQLITE3 OruxMapsImages.db
 
 }
 
@@ -31,16 +33,22 @@ BEGIN TRANSACTION;
 CREATE TABLE tiles (x int, y int, z int, image blob, PRIMARY KEY (x,y,z));
 COMMIT;
 EOF
-) | sqlite3 OruxMapsImages.db
+) | $SQLITE3 OruxMapsImages.db
 
 
 
 addlayer NZ63      12
+addlayer NZ632     13
 addlayer NZ632     14
 addlayer NZ6321    15
+addlayer NZ6321_1  16
 addlayer NZ6321_1  17
 #addlayer NZ6324    15
 #addlayer NZ6324_1  16
+addlayer NZ64       8
+addlayer NZ64       9
+addlayer NZ64      10
+addlayer NZ64      11
 
 (
 cat <<EOF
@@ -51,5 +59,5 @@ CREATE INDEX IND on tiles (x,y,z);
 COMMIT;
 EOF
 
-) | sqlite3 OruxMapsImages.db
+) | $SQLITE3 OruxMapsImages.db
 
