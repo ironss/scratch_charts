@@ -1,14 +1,48 @@
+Chart     Scale    Max zoom level generated
+                       Max zoom level to use on low-res Android
 NZ63      200000   13  12
 NZ632      75000   15  14
 NZ6321     25000   16  15
 NZ6321_1    7500   18  17
 NZ6324     30000   16  15
 NZ6324_1   15000   17  16
+NZ64      300000   12  11
+
+
+
+Generate maps from calibrated image file 
+----------------------------------------
+
+1. Get a calibrated image file or an image file with a separate calibration file
+       GeoTiff    (.tif)
+       BSB file   (.kap)
+       World file (.pgw, .jpw, .tfw, etc)
+
+1.1. bsb2png
+1.2. gdal_translate
+   
+
+2. Use OruxMapsDesktop to convert calibrated image file to OruxMaps format
+
+2.1. Load calibration file
+2.2. Load image file
+2.3. Set map name
+2.4. Set output directory
+2.5. Choose scales
+2.6. Sqlite format
+2.7. Generate
+
+
+3. Combine various map layers into one big file.
 
 
 
 
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
-CREATE TABLE tiles (x int, y int, z int, image blob, PRIMARY KEY (x,y,z));
+Generate maps from online sources
+---------------------------------
 
+1. Use Mobile Atlas Creator 1.8 (or perhaps higher) to generate Oruxmaps Sqlite 
+   format.
+   
+
+2. 
