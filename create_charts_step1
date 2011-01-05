@@ -1,6 +1,6 @@
 #! /bin/sh
 
-charts="NZ63 NZ632 NZ6321 NZ6321_1 NZ6324 NZ6324_1"
+charts="NZ63 NZ632 NZ6321 NZ6321_1 NZ6324 NZ6324_1 NZ64"
 
 for c in $charts ; do
    echo $c
