@@ -37,6 +37,9 @@ EOF
 
 
 
+addlayer NZ63       9
+addlayer NZ63      10
+addlayer NZ63      11
 addlayer NZ63      12
 addlayer NZ632     13
 addlayer NZ632     14
@@ -45,10 +48,6 @@ addlayer NZ6321_1  16
 addlayer NZ6321_1  17
 #addlayer NZ6324    15
 #addlayer NZ6324_1  16
-addlayer NZ64       8
-addlayer NZ64       9
-addlayer NZ64      10
-addlayer NZ64      11
 
 (
 cat <<EOF
