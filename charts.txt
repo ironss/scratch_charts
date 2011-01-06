@@ -10,6 +10,19 @@ NZ64      300000   12  11
 
 
 
+
+EPSG codes
+----------
+EPSG:2193   New Zealand Transverse Mercator projection
+EPSG:27200  New Zealand Map Grid projection
+EPSG:3785   Popular visulasation CRS
+EPSG:4326   WGS 84 lat/long
+
+EPSG:900913 Google projection
+EPSG:3857
+EPSG:3395
+
+
 Generate maps from calibrated image file 
 ----------------------------------------
 
