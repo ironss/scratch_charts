@@ -11,7 +11,7 @@ cat <<EOF
 BEGIN TRANSACTION;
 EOF
 
-$SQLITE3 $1/OruxMapsImages.db .d | 
+$SQLITE3 out/$1/OruxMapsImages.db .d | 
 grep "INSERT INTO \"tiles\" VALUES([[:digit:]]\+,[[:digit:]]\+,$2"
 
 cat <<EOF

@@ -2,11 +2,21 @@
 
 charts="NZ63 NZ632 NZ6321 NZ6321_1 NZ6324 NZ6324_1 NZ64"
 
+rm -rf in
+mkdir -p in
+
+rm -rf out
+mkdir -p out
+
+pushd in
+
 for c in $charts ; do
    echo $c
    kapfile=/usr/local/share/charts/LINZ/NewZealand/$c.kap
+
    cp "$kapfile" .
    gdal_translate -of PNG "$c.kap" "$c.png"
-   
 done
+
+popd
 
