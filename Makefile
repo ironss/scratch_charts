@@ -22,3 +22,6 @@ $(pngdir)/%.kap: $(srcdir)/%.kap
 $(pngdir)/%.png: $(pngdir)/%.kap
 	gdal_translate -of PNG "$<" "$@"
 
+clean:
+	rm -rf $(pngdir)
+	
