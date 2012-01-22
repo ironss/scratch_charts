@@ -1,32 +1,46 @@
 
-charts = 
-charts += NZ61
-charts += NZ614
-charts += NZ614_1
-charts += NZ614_2
-charts += NZ6142_1
-charts += NZ6142_2
-charts += NZ6143
-charts += NZ6144
-charts += NZ6144_1
+banks_charts = 
+banks_charts += NZ61
+banks_charts += NZ614
+banks_charts += NZ614_1
+banks_charts += NZ614_2
+banks_charts += NZ6142_1
+banks_charts += NZ6142_2
+banks_charts += NZ6143
+banks_charts += NZ6144
+banks_charts += NZ6144_1
 
-charts += NZ63 
-charts += NZ632 
-charts += NZ6321 
-charts += NZ6321_1 
-charts += NZ6324 
-charts += NZ6324_1 
-charts += NZ64
+abel_charts = 
+abel_charts += NZ63 
+abel_charts += NZ632 
+abel_charts += NZ6321 
+abel_charts += NZ6321_1 
+abel_charts += NZ6324 
+abel_charts += NZ6324_1 
+abel_charts += NZ64
+
+charts =
+charts += $(banks_charts)
+charts += $(abel_charts)
+
 
 srcdir = /usr/local/share/charts/LINZ/NewZealand
 
 pngdir = png
-pngfiles = $(patsubst %,$(pngdir)/%.png,$(charts))
-kapfiles = $(patsubst %,$(pngdir)/%.kap,$(charts))
-
 outdir = out
 
-all: allkapfiles allpngfiles $(outdir)
+pngfiles = $(patsubst %,$(pngdir)/%.png,$(charts))
+kapfiles = $(patsubst %,$(pngdir)/%.kap,$(charts))
+dbfiles = $(patsubst %,$(outdir)/%/OruxMapsImages.db,$(charts))
+
+infiles: allkapfiles allpngfiles $(outdir)
+outfiles: OruxMapsImages.db
+
+Abel/OruxMapsImages.db: $(patsubst %,$(outdir)/%/OruxMapsImages.db,$(abel_charts))
+	./create_charts_step2_abel
+	
+Banks/OruxMapsImages.db: $(patsubst %,$(outdir)/%/OruxMapsImages.db,$(banks_charts))
+	./create_charts_step2_banks
 
 $(outdir):
 	mkdir -p "$(outdir)"
