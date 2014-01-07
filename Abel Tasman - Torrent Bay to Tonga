@@ -32,7 +32,7 @@ done
 
 rm -rf "$name.png"
 convert \
-   -size 2240x3508 xc:white \
+   -size 2240x3350 xc:white \
    -density 300x300 \
        "$chart[2080x3148+4700+5500]" -geometry +80+60    -composite \
        "$chart[2072x60+4700+594]"    -geometry +80+0     -composite \
@@ -48,6 +48,8 @@ convert \
    -font 'Helvetica' \
    -pointsize 8 \
    -annotate +1500+3320 "(from $chart_no. Not to be used for navigation.)" \
+   -pointsize 5 \
+   -annotate +2152+3208 "176\n267" \
    "$name.png" 2> /dev/null
 
 
