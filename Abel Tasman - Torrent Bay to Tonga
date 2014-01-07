@@ -2,16 +2,25 @@
 
 name='Abel Tasman - Torrent Bay to Tonga'
 scale="1:35000"
-source="NZ 6144"
+chart_no="NZ6144"
+
+kappath=/usr/local/share/charts/LINZ/NewZealand
+chart=$chart_no.png
+proj=2193
+
+gpxpath=/home/stephen/projects/gps/tracks
+gpxfile=holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx
+
+gdal_translate -of PNG -a_srs EPSG:$proj $kappath/$chart_no.kap $chart
 
 convert \
    -size 2240x3508 xc:white \
    -density 300x300 \
-       "png/NZ6144.png[2080x3148+4700+5500]" -geometry +80+60    -composite \
-       "png/NZ6144.png[2072x60+4700+594]"    -geometry +80+0     -composite \
-       "png/NZ6144.png[2072x60+4700+12336]"  -geometry +80+3208  -composite \
-       "png/NZ6144.png[80x3148+427+5500]"    -geometry +0+60     -composite \
-       "png/NZ6144.png[80x3148+7999+5500]"   -geometry +2152+60  -composite \
+       "$chart[2080x3148+4700+5500]" -geometry +80+60    -composite \
+       "$chart[2072x60+4700+594]"    -geometry +80+0     -composite \
+       "$chart[2072x60+4700+12336]"  -geometry +80+3208  -composite \
+       "$chart[80x3148+427+5500]"    -geometry +0+60     -composite \
+       "$chart[80x3148+7999+5500]"   -geometry +2152+60  -composite \
    -stroke black -fill none \
    -draw "polyline 80,60 2152,60 2152,3208 80,3208 80,60" \
    -stroke black -fill black \
@@ -20,6 +29,6 @@ convert \
    -annotate +80+3325 "$name"  \
    -font 'Helvetica' \
    -pointsize 8 \
-   -annotate +1500+3320 "from $source. Not to be used for navigation." \
+   -annotate +1500+3320 "(from $chart_no. Not to be used for navigation.)" \
    "$name.png"
 
