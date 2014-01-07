@@ -19,15 +19,15 @@ rm -rf $chart
 gdalwarp -of GTiff -t_srs EPSG:$proj $kappath/$chart_no.kap $chart
 
 for track in $tracks; do
-   rm -rf $track.EPSG-$proj
-   gdal_translate -of GTiff -scale 0 255 0 0 $chart $chart_prefix-$track.tiff
-   ogr2ogr -t_srs EPSG:$proj  $track.EPSG-$proj $track tracks
-   gdal_rasterize -b 1 -burn 2  -l tracks $track.EPSG-$proj $chart
+   mkdir -p tmp
+   rm -rf tmp/$track.EPSG-$proj
+   ogr2ogr -t_srs EPSG:$proj  tmp/$track.EPSG-$proj test/$track tracks
+   gdal_rasterize -b 1 -burn 2  -l tracks tmp/$track.EPSG-$proj $chart
 
    # Rasterize onto a white chart
    # TODO: Work out how to make it transparent.
    gdal_translate -of GTiff -scale 0 255 0 0 $chart $chart_prefix-$track.tiff
-   gdal_rasterize -b 1 -burn 8  -l tracks $track.EPSG-$proj $chart_prefix-$track.tiff
+   gdal_rasterize -b 1 -burn 8  -l tracks tmp/$track.EPSG-$proj $chart_prefix-$track.tiff
 done
 
 rm -rf "$name.png"
