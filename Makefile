@@ -10,21 +10,24 @@ charts=NZ614 NZ6144
 charts_gtiff=$(patsubst %,%-EPSG-$(proj).tiff,$(charts))
 
 tracks=$(patsubst gpx/%.gpx,%.gpx,$(wildcard gpx/*.gpx))
+tracks_georef=$(patsubst %,tmp/%,$(tracks))
 
-track_proj=$(patsubst %,tmp/%,$(tracks))
 track_overlays=$(patsubst %,%-$(chart),$(tracks))
 
 scratch_charts=abel_tasman_torrent_tonga
 scratch_pngs=$(patsubst %,%-scratch.png,$(scratch_charts))
+scratch_overlay_pngs=$(patsubst %,%-overlay.png,$(scratch_charts))
 
-all: $(scratch_pngs) $(charts_gtiff) $(track_overlays)
+all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs)
 
-#abel_tasman_torrent_tonga.png: abel_tasman_torrent_tonga NZ6144-EPSG-$(proj).tiff
-#	./abel_tasman_torrent_tonga NZ6144-EPSG-$(proj).tiff
-
-
-%-scratch.png: % NZ6144-EPSG-$(proj).tiff
+abel_tasman_torrent_tonga-scratch.png: abel_tasman_torrent_tonga NZ6144-EPSG-$(proj).tiff
 	./$< NZ6144-EPSG-$(proj).tiff $@
+
+abel_tasman_torrent_tonga-overlay.png: abel_tasman_torrent_tonga NZ6144-EPSG-$(proj)-overlay.tiff
+	./abel_tasman_torrent_tonga NZ6144-EPSG-$(proj)-overlay.tiff $@
+
+NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(tracks_georef)
+	./overlay $@ $^
 
 overlays: $(track_overlays)
 

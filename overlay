@@ -1,0 +1,11 @@
+#! /bin/sh
+
+dest=$1
+source=$2
+overlays="$3 $4"
+
+cp $source $dest
+for f in $overlays; do
+   gdal_rasterize -b 1 -burn 2 -l tracks $f $dest
+done
+
