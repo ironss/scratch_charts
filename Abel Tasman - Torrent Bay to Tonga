@@ -48,3 +48,13 @@ convert \
    -annotate +1500+3320 "(from $chart_no. Not to be used for navigation.)" \
    "$name.png"
 
+
+# Common projections
+#   EPSG:3395    WGS 84 / World Mercator                           Very small scale mappings.
+#   EPSG:4326    WGS 84                                            Horizontal component of 3D system. Used by GPS.
+#   EPSG:2193    NZGD2000 / New Zealand Transverse Mercator 2000   Large and medium scale topographic mapping and engineering survey.
+#   EPSG:27200   NZGD49 / New Zealand Map Grid                     Large and medium scale topographic mapping and engineering survey.
+
+# Old projections
+#   EPSG:3857    ? 
+#   EPSG:900913                                                 
