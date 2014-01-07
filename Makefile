@@ -9,17 +9,23 @@ proj=2193
 chart_prefix=$(chart_no)-EPSG-$(proj)
 chart=$(chart_prefix).tiff
 
+charts=NZ614 NZ6144
+chart_projs=$(patsubst %,%-EPSG-$(proj).tiff,$(charts))
+
 tracks=$(patsubst gpx/%.gpx,%.gpx,$(wildcard gpx/*.gpx))
 
 track_proj=$(patsubst %,tmp/%,$(tracks))
 track_overlays=$(patsubst %,%-$(chart),$(tracks))
 
-all: $(scratch) $(track_overlays)
+all: $(scratch) $(chart_projs) $(track_overlays)
 
 overlays: $(track_overlays)
 
-$(chart): $(kappath)/$(chart_no).kap
+%-EPSG-$(proj).tiff: $(kappath)/%.kap
 	gdalwarp -of GTiff -t_srs EPSG:$(proj) "$<" "$@"
+
+#$(chart): $(kappath)/$(chart_no).kap
+#	gdalwarp -of GTiff -t_srs EPSG:$(proj) "$<" "$@"
 
 
 $(scratch): $(chart)
