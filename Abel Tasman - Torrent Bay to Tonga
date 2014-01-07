@@ -12,6 +12,9 @@ convert \
        "png/NZ6144.png[2072x60+4700+12336]"  -geometry +80+3208  -composite \
        "png/NZ6144.png[80x3148+427+5500]"    -geometry +0+60     -composite \
        "png/NZ6144.png[80x3148+7999+5500]"   -geometry +2152+60  -composite \
+   -stroke black -fill none \
+   -draw "polyline 80,60 2152,60 2152,3208 80,3208 80,60" \
+   -stroke black -fill black \
    -font 'Helvetica-Bold' \
    -pointsize 16 \
    -annotate +80+3325 "$name"  \
