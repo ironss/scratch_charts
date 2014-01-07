@@ -1,0 +1,28 @@
+digraph
+{
+   rankdir=LR
+
+   LINZ_tif -> calibrate
+   calibrate -> LINZ_GTiff
+   LINZ_tif -> magic
+   magic -> NZ_chart_kap
+   
+   NZ_chart_kap -> georef
+   georef -> NZ_chart_tiff
+   
+   NZ_chart_tiff -> extract
+   scratch_spec -> extract
+   extract -> scratch_chart_png
+   
+   track_gpx -> reproject
+   reproject -> track_shp
+   
+   track_shp -> rasterize
+   NZ_chart_tiff -> rasterize
+   rasterize -> track_tiff
+   
+   track_shp -> summarize
+   scratch_spec -> summarize
+   NZ_chart_tiff -> summarize
+   summarize -> small_chart_with_track_png
+}
