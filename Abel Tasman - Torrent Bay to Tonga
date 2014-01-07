@@ -1,0 +1,17 @@
+#! /bin/sh
+
+name='Abel Tasman - Torrent Bay to Tonga'
+
+convert \
+   -gravity center \
+   -density 300x300 \
+       'png/NZ6144.png[2072x60+4700+594]' \
+   '(' \
+       'png/NZ6144.png[80x3148+427+5500]' \
+       'png/NZ6144.png[2080x3148+4700+5500]' \
+       'png/NZ6144.png[80x3148+7999+5500]' \
+    +append ')' \
+       'png/NZ6144.png[2072x60+4700+12336]' \
+    -append \
+    "$name.png"
+
