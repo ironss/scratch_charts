@@ -5,14 +5,21 @@ scale="1:35000"
 chart_no="NZ6144"
 
 kappath=/usr/local/share/charts/LINZ/NewZealand
-chart=$chart_no.png
 proj=2193
+chart=$chart_no-EPSG-$proj.tiff
 
-gpxpath=/home/stephen/projects/gps/tracks
+gpxpath=. #/home/stephen/projects/gps/tracks
 gpxfile=holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx
+track=$gpxpath/$gpxfile
 
-gdal_translate -of PNG -a_srs EPSG:$proj $kappath/$chart_no.kap $chart
+rm -rf $chart
+gdalwarp -of GTiff -t_srs EPSG:$proj $kappath/$chart_no.kap $chart
 
+rm -rf $track.EPSG-$proj 
+ogr2ogr -t_srs EPSG:$proj  $track.EPSG-$proj $track tracks
+gdal_rasterize -b 1 -burn 2  -l tracks $track.EPSG-$proj $chart
+
+rm -rf "$name.png"
 convert \
    -size 2240x3508 xc:white \
    -density 300x300 \
