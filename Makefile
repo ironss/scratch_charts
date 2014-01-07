@@ -39,7 +39,7 @@ overlays: $(track_overlays)
 tmp/%: gpx/%
 	rm -rf $@
 	mkdir -p $@
-	ogr2ogr -t_srs EPSG:$(proj) $@ $< tracks
+	ogr2ogr -f "ESRI Shapefile" -t_srs EPSG:$(proj) $@ $< tracks
 
 %-$(chart): tmp/% $(chart)
 	gdal_translate -of GTiff -scale 0 255 0 0 $(chart) $@
