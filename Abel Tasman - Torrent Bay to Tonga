@@ -1,5 +1,6 @@
 #! /bin/sh
 
+# Usage:
 name='Abel Tasman - Torrent Bay to Tonga'
 scale="1:35000"
 chart_no="NZ6144"
@@ -11,7 +12,8 @@ chart=$chart_prefix.tiff
 
 gpxpath=. #/home/stephen/projects/gps/tracks
 gpxfile=holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx
-tracks="holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx holux-1000c-00.1B.C1.06.F5.80-20131221_1958.gpx"
+tracks="holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx \
+        holux-1000c-00.1B.C1.06.F5.80-20131221_1958.gpx"
 
 rm -rf $chart
 gdalwarp -of GTiff -t_srs EPSG:$proj $kappath/$chart_no.kap $chart
@@ -46,7 +48,7 @@ convert \
    -font 'Helvetica' \
    -pointsize 8 \
    -annotate +1500+3320 "(from $chart_no. Not to be used for navigation.)" \
-   "$name.png"
+   "$name.png" 2> /dev/null
 
 
 # Common projections
@@ -58,3 +60,4 @@ convert \
 # Old projections
 #   EPSG:3857    ? 
 #   EPSG:900913                                                 
+
