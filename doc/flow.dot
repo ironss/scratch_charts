@@ -2,27 +2,64 @@ digraph
 {
    rankdir=LR
 
+   {
+      node [ shape=box ]
+      LINZ_tif         [ label="LINZ TIFF\nNo georef\n(TIFF)" ]
+      LINZ_GTiff       [ label="LINZ GeoTIFF\nWith SRS\n(TIFF)" ]
+      NZ_chart_kap     [ label="NZ Chart files\nWith GCP\n(KAP)" ]
+      LINZ_cal         [ label="Calibration for\nLINZ TIFF files\n(?)" ]
+      NZ_chart_tiff    [ label="NZ Chart files\nWith SRS\n(TIFF)" ]
+      scratch_spec     [ label="Scratch chart\nspecifications\n(?)" ]
+      track_gpx        [ label="Tracks\nWGS84\n(GPX)" ]
+      track_shp        [ label="Projected tracks\nWith SRS\n(SHP)" ]
+      projection       [ label="Projection\n(ESRI)" ]
+      scratch_png      [ label="Scratch chart images\nNo georef\n(PNG)" ]
+      scratch_tiff     [ label="Scratch chart extracts\nWith SRS\n(TIFF)" ]
+      track_overlay       [ label="Rasterized track only\nWith SRS\n(TIFF)" ]
+      chart_with_overlay  [ label="Chart with track overlay\nWith SRS\n(TIFF)" ]
+      scratch_with_overlay_png  [ label="Decorated chart extract with track overlay\nNo georef\n(PNG)" ]
+      scratch_with_overlay_tiff [ label="Chart extract with track overlay\nWith SRS\n(TIFF)" ]
+   }
+   
+   extract1 [ label="extract" ]
+      
    LINZ_tif -> calibrate
+   LINZ_cal -> calibrate
    calibrate -> LINZ_GTiff
+
    LINZ_tif -> magic
    magic -> NZ_chart_kap
    
-   NZ_chart_kap -> georef
-   georef -> NZ_chart_tiff
+   NZ_chart_kap -> warp
+   projection -> warp
+   warp -> NZ_chart_tiff
    
    NZ_chart_tiff -> extract
    scratch_spec -> extract
-   extract -> scratch_chart_png
+   extract -> scratch_png
+   extract -> scratch_tiff
    
-   track_gpx -> reproject
-   reproject -> track_shp
+   track_gpx -> project
+   projection -> project
+   project -> track_shp
    
    track_shp -> rasterize
    NZ_chart_tiff -> rasterize
-   rasterize -> track_tiff
+   rasterize -> chart_with_overlay
+   rasterize -> track_overlay
    
-   track_shp -> summarize
-   scratch_spec -> summarize
-   NZ_chart_tiff -> summarize
-   summarize -> small_chart_with_track_png
+#   track_shp -> summarize
+#   scratch_spec -> summarize
+#   NZ_chart_tiff -> summarize
+#   summarize -> small_chart_with_track_png
+
+   NZ_chart_tiff -> composite
+   track_overlay -> composite
+   composite -> chart_with_overlay
+   
+   scratch_spec -> extract1
+   chart_with_overlay -> extract1
+   extract1 -> scratch_with_overlay_tiff
+   extract1 -> scratch_with_overlay_png
+   
 }
