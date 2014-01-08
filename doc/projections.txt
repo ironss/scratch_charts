@@ -1,0 +1,13 @@
+Common projections
+==================
+
+EPSG:3395    WGS 84 / World Mercator                           Very small scale mappings.
+EPSG:4326    WGS 84                                            Horizontal component of 3D system. Used by GPS.
+EPSG:2193    NZGD2000 / New Zealand Transverse Mercator 2000   Large and medium scale topographic mapping and engineering survey.
+EPSG:27200   NZGD49 / New Zealand Map Grid                     Large and medium scale topographic mapping and engineering survey.
+
+Old projections
+===============
+EPSG:3857    Both of these were earlier 'World Mercator' types, and have been
+EPSG:900913  superceded by EPSG:3395                                                 
+
