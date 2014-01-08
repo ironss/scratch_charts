@@ -4,10 +4,10 @@ digraph
 
    {
       node [ shape=box ]
-      LINZ_tif         [ label="LINZ TIFF\nNo georef\n(TIFF)" ]
-      LINZ_GTiff       [ label="LINZ GeoTIFF\nWith SRS\n(TIFF)" ]
+      LINZ_tif         [ label="LINZ TIFF\nNo georef\n(TIFF)", style=filled, fillcolor="#E0E0E0" ]
+      LINZ_GTiff       [ label="LINZ GeoTIFF\nWith SRS\n(TIFF)", style=filled, fillcolor="#E0E0E0" ]
+      LINZ_cal         [ label="Calibration for\nLINZ TIFF files\n(?)", style=filled, fillcolor="#E0E0E0" ]
       NZ_chart_kap     [ label="NZ Chart files\nWith GCP\n(KAP)" ]
-      LINZ_cal         [ label="Calibration for\nLINZ TIFF files\n(?)" ]
       NZ_chart_tiff    [ label="NZ Chart files\nWith SRS\n(TIFF)" ]
       scratch_spec     [ label="Scratch chart\nspecifications\n(?)" ]
       track_gpx        [ label="Tracks\nWGS84\n(GPX)" ]
@@ -21,6 +21,8 @@ digraph
       scratch_with_overlay_tiff [ label="Chart extract with track overlay\nWith SRS\n(TIFF)" ]
    }
    
+   calibrate [ style=filled, fillcolor="#E0E0E0" ]
+   magic [ style=filled, fillcolor="#E0E0E0" ]
    extract1 [ label="extract" ]
       
    LINZ_tif -> calibrate
