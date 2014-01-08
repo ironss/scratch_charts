@@ -13,7 +13,7 @@ digraph
       track_gpx        [ label="Tracks\nWGS84\n(GPX)" ]
       track_shp        [ label="Projected tracks\nWith SRS\n(SHP)" ]
       projection       [ label="Projection\n(ESRI)" ]
-      scratch_png      [ label="Scratch chart images\nNo georef\n(PNG)" ]
+      scratch_png      [ label="Decorated scratch chart images\nNo georef\n(PNG)" ]
       scratch_tiff     [ label="Scratch chart extracts\nWith SRS\n(TIFF)" ]
       track_overlay       [ label="Rasterized track only\nWith SRS\n(TIFF)" ]
       chart_with_overlay  [ label="Chart with track overlay\nWith SRS\n(TIFF)" ]
@@ -29,8 +29,8 @@ digraph
    LINZ_cal -> calibrate [ style=dashed ]
    calibrate -> LINZ_GTiff [ style=dashed ]
 
-   LINZ_tif -> magic
-   magic -> NZ_chart_kap
+   LINZ_tif -> magic [ style=dashed ]
+   magic -> NZ_chart_kap [ style=dashed ]
    
    NZ_chart_kap -> warp
    projection -> warp
