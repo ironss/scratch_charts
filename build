@@ -1,0 +1,56 @@
+#! /usr/bin/python
+
+from fabricate import *
+
+
+charts=[ 
+   'NZ614', 
+#   'NZ6144',
+]
+tracks=[ 
+   'holux-1000c-00.1B.C1.06.F5.80-20131220_2219.gpx',
+#   'holux-1000c-00.1B.C1.06.F5.80-20131221_1958.gpx', 
+]
+
+
+proj='EPSG:2193'
+
+
+kappath='/usr/local/share/charts/LINZ/NewZealand'
+
+
+def build():
+   project_charts()
+   project_tracks()
+   create_overlays()
+   overlay_charts()
+
+
+def project_charts():
+   for c in charts:
+      run('gdalwarp', '-of', 'GTiff', '-co', 'COMPRESS=LZW', '-t_srs', proj, kappath+'/'+c+'.kap', c+'-'+proj+'.tiff')
+
+
+def project_tracks():
+   for t in tracks:
+      run('rm', '-rf', 'tmp/'+t+'-'+proj)
+      run('mkdir', '-p', 'tmp/'+t+'-'+proj)
+      run('ogr2ogr', '-f', 'ESRI Shapefile', '-t_srs', proj, 'tmp/'+t+'-'+proj, 'gpx/'+t, 'tracks')
+
+
+def create_overlays():
+   for c in charts:
+      for t in tracks:
+         run('gdal_translate', '-of', 'GTiff', '-co', 'COMPRESS=LZW', '-scale', '0', '255', '0', '0', c+'-'+proj+'.tiff', c+'-'+proj+'-'+t+'-overlay.tiff')
+         run('gdal_rasterize', '-b', '1', '-burn', '8', '-l', 'tracks', 'tmp/'+t+'-'+proj, c+'-'+proj+'-'+t+'-overlay.tiff')
+         run('mogrify', '-morphology', 'Erode', 'Octagon', '-fill', 'red', '-opaque', 'black', '-transparent', 'white', c+'-'+proj+'-'+t+'-overlay.tiff')
+
+
+def overlay_charts():
+   for c in charts:
+      for t in tracks:
+         run('mogrify', c+'-'+proj+'-'+t+'-overlay.tiff', '-composite', c+'-'+proj+'-overlays.tiff')
+
+
+main()
+
