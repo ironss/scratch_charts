@@ -51,6 +51,9 @@ tmp/%: gpx/%
 %-$(chart): tmp/% $(chart)
 	gdal_translate -of GTiff -scale 0 255 0 0 $(chart) $@
 	gdal_rasterize -b 1 -burn 8 -l tracks $< $@
+	# TODO: Make a thicker line
+	# TODO: Make background invisible
+	# TODO: Change the overlay colour
 
 
 clean:
