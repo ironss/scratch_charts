@@ -1,0 +1,71 @@
+digraph
+{
+   rankdir=LR
+   {
+      node [ shape=box ]
+      
+      chart1_kap [ label="chart1.kap" ]
+      chart1_proj [ label="chart1-proj.tiff" ]
+      chart1_extractA [ label="chart1-extractA.tiff" ]
+      chart1_overlay [ label="chart1-overlay.tiff" ]
+      chart1_extractA_overlay [ label="chart1-extractA-overlay.tiff" ]
+
+      track1_gpx [ label="track1.gpx" ]
+      track1_projection_shp [ label="track1-proj.shp" ]
+
+      track2_gpx [ label="track2.gpx" ]
+      track2_projection_shp [ label="track2-proj.shp" ]
+
+      chart1_track1_overlay [ label="chart1-proj-track1-overlay.tiff" ]
+      chart1_track2_overlay [ label="chart1-proj-track2-overlay.tiff" ]
+
+#      chart2_kap [ label="chart2.kap" ]
+#      chart2_proj [ label="chart2.tiff" ]
+
+   }
+
+   {
+      node [ shape=note ]
+
+      chart1_extractA_spec [ label="chart1_extractA.spec" ]
+#      chart1_extract2_spec [ label="chart1_extract2.spec" ]
+      projection [ label="projection" ]
+   }
+
+   chart1_kap -> warp1 -> chart1_proj
+   projection -> warp1
+
+#   chart2_kap -> warp2 -> chart2_proj
+#   projection -> warp2
+
+   chart1_extractA_spec -> extract1
+   chart1_proj          -> extract1
+   extract1 -> chart1_extractA
+
+
+   track1_gpx  -> project1
+   projection -> project1
+   project1 -> track1_projection_shp
+
+   track1_projection_shp -> raster1
+   chart1_proj -> raster1
+   raster1 -> chart1_track1_overlay
+
+   track2_gpx  -> project2
+   projection -> project2
+   project2 -> track2_projection_shp
+   
+   track2_projection_shp -> raster2
+   chart1_proj -> raster2
+   raster2 -> chart1_track2_overlay
+
+   chart1_proj -> overlay1
+   chart1_track1_overlay -> overlay1
+   chart1_track2_overlay -> overlay1
+   overlay1 -> chart1_overlay
+   
+   chart1_extractA_spec -> extract2
+   chart1_overlay -> extract2
+   extract2 -> chart1_extractA_overlay
+}
+

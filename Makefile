@@ -8,6 +8,7 @@ chart=$(chart_prefix).tiff
 
 charts=NZ614 NZ6144
 charts_gtiff=$(patsubst %,%-EPSG-$(proj).tiff,$(charts))
+chart_overlays=$(patsubt %,%-EPSG-$(proj)-overlay.tiff,$(charts))
 
 scratch_charts=NZ6144_Torrent_Bay_to_Tonga
 scratch_pngs=$(patsubst %,%-scratch.png,$(scratch_charts))
@@ -20,7 +21,9 @@ scratch_overlay_pngs=$(patsubst %,%-overlay.png,$(scratch_charts))
 
 
 # General targets
-all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs)
+all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs) $(chart_overlays)
+	echo $(chart_overlays)
+
 overlays: $(track_overlays)
 
 
@@ -32,7 +35,7 @@ NZ6144_Torrent_Bay_to_Tonga-scratch.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ614
 NZ6144_Torrent_Bay_to_Tonga-overlay.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj)-overlay.tiff
 	./$^ $@
 
-NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(track_overlays)
+%-overlay.tiff: %.tiff $(track_overlays)
 	convert $< $(patsubst %,% -composite,$(track_overlays)) $@
 
 
