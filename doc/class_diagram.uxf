@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="12.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>510</x>
+      <y>470</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;&gt;</panel_attributes>
+    <additional_attributes>160;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>670</x>
+      <y>440</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart extract
+--
+* Chart_name: string {I}
+* Extract_name: string {I}
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>220</x>
+      <y>320</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart_with_GCPs
+--
+* Identifier: type {I}
+- attribute1: type
+- attribute2: type {Rn}
+- attribute3: type {M}
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>500</x>
+      <y>400</y>
+      <w>76</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>Rn
+r1=role
+m1=1
+r2=other
+m2=0..*
+</panel_attributes>
+    <additional_attributes>40;30;40;160</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>440</x>
+      <y>320</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart with SRS
+--
+* Name: string {I}
+- projection: ESRI_spec
+
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>440</x>
+      <y>560</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart extract spec
+--
+* Name: string {I}
+- chart_region: rectangle
+- border: size {Rn}
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>390</x>
+      <y>150</y>
+      <w>510</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Rn
+r1=role
+m1=0..*
+r2=other
+m2=0..*
+</panel_attributes>
+    <additional_attributes>30;50;490;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>880</x>
+      <y>150</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Track
+--
+* Name: string {I}
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>320</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart_no_georef
+--
+* Identifier: type {I}
+- attribute1: type
+- attribute2: type {Rn}
+- attribute3: type {M}
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>220</x>
+      <y>150</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>Chart
+--
+* Name: string {I}
+
+
+bt=*</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
