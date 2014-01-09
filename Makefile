@@ -2,7 +2,7 @@
 kappath=/usr/local/share/charts/LINZ/NewZealand
 proj=2193
 
-chart_no=NZ6144
+chart_no=NZ614
 chart_prefix=$(chart_no)-EPSG-$(proj)
 chart=$(chart_prefix).tiff
 
@@ -21,7 +21,7 @@ scratch_overlay_pngs=$(patsubst %,%-overlay.png,$(scratch_charts))
 
 
 # General targets
-all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs) $(chart_overlays)
+all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs) $(chart_overlays) NZ614-EPSG-$(proj)-overlay.tiff
 	echo $(chart_overlays)
 
 overlays: $(track_overlays)
