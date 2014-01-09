@@ -22,5 +22,5 @@ convert \
    -annotate +1500+3320 "(from NZ 6144. Not to be used for navigation.)" \
    -pointsize 5 \
    -annotate +2152+3208 "176\n267" \
-   "$2"
+   "$name"
 
