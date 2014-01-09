@@ -25,11 +25,11 @@ overlays: $(track_overlays)
 
 
 # Dependencies for individual scratch charts
-NZ6144_Torrent_Bay_to_Tonga-scratch.png: NZ6144_Torrent_Bay_to_Tonga  NZ6144-EPSG-$(proj).tiff
+NZ6144_Torrent_Bay_to_Tonga-scratch.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj).tiff
 	./$^ $@
 
 # Overlays
-NZ6144_Torrent_Bay_to_Tonga-overlay.png: NZ6144_Torrent_Bay_to_Tonga  NZ6144-EPSG-$(proj)-overlay.tiff
+NZ6144_Torrent_Bay_to_Tonga-overlay.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj)-overlay.tiff
 	./$^ $@
 
 NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(tracks_georef)
