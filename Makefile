@@ -32,9 +32,8 @@ NZ6144_Torrent_Bay_to_Tonga-scratch.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ614
 NZ6144_Torrent_Bay_to_Tonga-overlay.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj)-overlay.tiff
 	./$^ $@
 
-NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(tracks_georef)
-	./overlay $@ $^
-
+NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(track_overlays)
+	convert $< $(patsubst %,% -composite,$(track_overlays)) $@
 
 
 # Create a GTiff (with a SRS) from a kap file
