@@ -37,9 +37,9 @@ NZ6144-EPSG-$(proj)-overlay.tiff: NZ6144-EPSG-$(proj).tiff $(tracks_georef)
 
 
 
-# Create a GTiff with a SRS from a kap file
+# Create a GTiff (with a SRS) from a kap file
 %-EPSG-$(proj).tiff: $(kappath)/%.kap
-	gdalwarp -of GTiff -t_srs EPSG:$(proj) "$<" "$@"
+	gdalwarp -of GTiff -co COMPRESS=LZW  -t_srs EPSG:$(proj) "$<" "$@"
 
 # Project a GPX file to a ESRI shapefile with a specified projections
 tmp/%: gpx/%
@@ -49,7 +49,7 @@ tmp/%: gpx/%
 
 # Create an overlay-chart 
 %-$(chart): tmp/% $(chart)
-	gdal_translate -of GTiff -scale 0 255 0 0 $(chart) $@
+	gdal_translate -of GTiff -co COMPRESS=LZW  -scale 0 255 0 0 $(chart) $@
 	gdal_rasterize -b 1 -burn 8 -l tracks $< $@
 	# TODO: Make a thicker line
 	# TODO: Make background invisible
