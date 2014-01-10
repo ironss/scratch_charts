@@ -10,7 +10,7 @@ charts=NZ614 NZ6144
 charts_gtiff=$(patsubst %,%-EPSG-$(proj).tiff,$(charts))
 chart_overlays=$(patsubt %,%-EPSG-$(proj)-overlay.tiff,$(charts))
 
-scratch_charts=NZ6144_Torrent_Bay_to_Tonga
+scratch_charts=NZ6144_Torrent_Bay_to_Tonga NZ614-Port_Motueka_to_Torrent_Bay-A4
 scratch_pngs=$(patsubst %,%-scratch.png,$(scratch_charts))
 
 
@@ -24,6 +24,9 @@ scratch_overlay_pngs=$(patsubst %,%-overlay.png,$(scratch_charts))
 all: $(scratch_pngs) $(charts_gtiff) $(track_overlays) $(scratch_overlay_pngs) $(chart_overlays) NZ614-EPSG-$(proj)-overlay.tiff
 	echo $(chart_overlays)
 
+scratch: $(scratch_pngs)
+scratch-overlays: $(scratch_overlay_pngs)
+
 overlays: $(track_overlays)
 
 
@@ -31,9 +34,16 @@ overlays: $(track_overlays)
 NZ6144_Torrent_Bay_to_Tonga-scratch.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj).tiff
 	./$^ $@
 
+NZ614-Port_Motueka_to_Torrent_Bay-A4-scratch.png: NZ614-Port_Motueka_to_Torrent_Bay-A4.spec  NZ614-EPSG-$(proj).tiff
+	./$^ $@
+
 # Overlays
 NZ6144_Torrent_Bay_to_Tonga-overlay.png: NZ6144_Torrent_Bay_to_Tonga.spec  NZ6144-EPSG-$(proj)-overlay.tiff
 	./$^ $@
+
+NZ614-Port_Motueka_to_Torrent_Bay-A4-overlay.png: NZ614-Port_Motueka_to_Torrent_Bay-A4.spec  NZ614-EPSG-$(proj)-overlay.tiff
+	./$^ $@
+
 
 %-overlay.tiff: %.tiff $(track_overlays)
 	convert $< $(patsubst %,% -composite,$(track_overlays)) $@
