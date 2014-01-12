@@ -16,10 +16,10 @@ convert \
    -stroke black -fill black \
    -font 'Helvetica-Bold' \
    -pointsize 16 \
-   -annotate +80+3325 "Abel Tasman - Torrent Bay to Tonga"  \
+   -annotate +80+3325 "NZ6144 - Torrent Bay to Tonga"  \
    -font 'Helvetica' \
    -pointsize 8 \
-   -annotate +1500+3320 "(from NZ 6144. Not to be used for navigation.)" \
+   -annotate +1500+3320 "Not to be used for navigation.)" \
    -pointsize 5 \
    -annotate +2152+3208 "176\n267" \
    "$name"
