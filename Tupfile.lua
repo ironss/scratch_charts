@@ -54,7 +54,7 @@ for s, spec in pairs(specs) do
          scratch_chart.chart = pchart.chart
          scratch_chart.projection = pchart.projection
          scratch_chart.filename = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.tiff'
-         scratch_chart.filename2 = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.png'
+         scratch_chart.filename2 = spec.name .. '.png'
          scratch_charts[#scratch_charts+1] = scratch_chart
 --         print(scratch_chart.filename)
 
@@ -78,9 +78,10 @@ end
 local tracks = {}
 for _, f in pairs(gpxfiles) do
    local trackname = f:match('gpx/(.+)%.gpx')
-   local track = { name=trackname, filename=f, shpfilename='tmp/'..f }
+   local tracktime = trackname:match('.+(%d%d%d%d%d%d%d%d_%d%d%d%d)')
+   local track = { name=trackname, filename=f, shpfilename='tmp/'..f, time=tracktime }
    tracks[trackname] = track
---   print(f, trackname)
+--   print(f, trackname, tracktime)
 end
 
 
@@ -114,8 +115,8 @@ for c, pchart in pairs(scratch_charts) do
 --      print(pchart.projection, ptrack.projection)
       if pchart.projection == ptrack.projection then
          local overlay_name = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.projection
-         local overlay_filename = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff'
-         local overlay_filename2 = pchart.chart.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '-' .. ptrack.track.name .. '.png'
+         local overlay_filename = ptrack.track.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff'
+         local overlay_filename2 = pchart.spec.name .. '-' .. ptrack.track.time .. '.png'
 --         print(overlay_name, overlay_filename, pchart.filename, ptrack.filename)
          
          tup.definerule{
