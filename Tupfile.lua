@@ -6,18 +6,21 @@ local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
 
 
 -- Find all the scratch chart specifications, and the associated chart
-local specs = {}
+local specs = 
+{
+   { name='NZ614-Port_Motueka_to_Torrent_Bay-A4', width=2080, height=3148, left=2700, top=3400 },
+   { name='NZ6144-Torrent_Bay_to_Tonga-A4', width=2080, height=3148, left=4700, top=5500 },
+}
+
 local charts = {}
-for _, f in pairs(specfiles) do
-   local specname = f:match( '(NZ%d+%-.+)%.spec')
-   local chartname = f:match('(NZ%d+)%-.+%.spec')
+for _, spec in pairs(specs) do
+   local chartname = spec.name:match('(NZ%d+)%-.+')
    local chart = { name=chartname, filename=kapfiledir .. chartname .. '.kap', specs={} }
-   local spec = { name=specname, filename=f, chart=chart }
-   specs[specname] = spec
+   spec.filename=spec.name .. '.spec'
+   spec.chart = chart
    charts[chartname] = chart
 --   print(f, specname, chartname)
 end
-
 
 -- Create projected charts for each chart and projection
 local projected_charts = {}
@@ -40,16 +43,30 @@ end
 
 -- For each scratch chart specification, find the projected charts associated 
 -- with it, and generate a scratch chart
+local scratch_charts = {}
 for s, spec in pairs(specs) do
    for c, pchart in pairs(projected_charts) do
       if spec.chart == pchart.chart then
-         local scratch_chart_name = spec.name .. '-' ..  pchart.projection
-         local scratch_chart_filename = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.png'
---         print(scratch_chart_filename)
+         local scratch_chart = {}
+         scratch_chart.name = spec.name .. '-' ..  pchart.projection
+         scratch_chart.spec = spec
+         scratch_chart.chart = pchart.chart
+         scratch_chart.projection = pchart.projection
+         scratch_chart.filename = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.tiff'
+         scratch_chart.filename2 = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.png'
+         scratch_charts[#scratch_charts+1] = scratch_chart
+--         print(scratch_chart.filename)
+
+         tup.definerule{
+            inputs={ pchart.filename },
+            outputs={ scratch_chart.filename },
+            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename 
+         }
+
          tup.definerule{
             inputs={ spec.filename, pchart.filename },
-            outputs={ scratch_chart_filename },
-            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. scratch_chart_filename
+            outputs={ scratch_chart.filename2 },
+            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename2
          }
       end
    end
@@ -90,13 +107,14 @@ for p, projection in pairs(projections) do
 end
 
 
--- Create full-size overlays, one per projected chart per track
-for c, pchart in pairs(projected_charts) do
+-- Create scratch-sized overlays, one per scratch chart per track
+for c, pchart in pairs(scratch_charts) do
    for t, ptrack in pairs(projected_tracks) do
 --      print(pchart.projection, ptrack.projection)
       if pchart.projection == ptrack.projection then
          local overlay_name = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.projection
-         local overlay_filename = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff'
+         local overlay_filename = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff'
+         local overlay_filename2 = pchart.chart.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '-' .. ptrack.track.name .. '.png'
 --         print(overlay_name, overlay_filename, pchart.filename, ptrack.filename)
          
          tup.definerule{
@@ -111,10 +129,15 @@ for c, pchart in pairs(projected_charts) do
                     'gdal_rasterize -b 1 -burn 8 -l tracks ' .. ptrack.filename .. ' ' .. overlay_filename .. ' && ' ..
                     'mogrify -morphology Erode Octagon -fill red -opaque black -transparent white ' .. overlay_filename
          }
+         
+         tup.definerule{
+            inputs={ pchart.filename, overlay_filename },
+            outputs={ overlay_filename2 },
+            command='convert -density 3000x300 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
+         }
       end
    end
 end
-
 
 
 -- Create a list of all scratch charts
