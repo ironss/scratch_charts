@@ -32,23 +32,23 @@ overlays: $(track_overlays)
 
 # Dependencies for individual scratch charts
 NZ6144-Torrent_Bay_to_Tonga-A4-scratch.png: NZ6144-Torrent_Bay_to_Tonga-A4.spec  NZ6144-EPSG-$(proj).tiff
-	./$^ $@
+	./$^ 2080x3148+4700+5500 $@
 
 NZ614-Port_Motueka_to_Torrent_Bay-A4-scratch.png: NZ614-Port_Motueka_to_Torrent_Bay-A4.spec  NZ614-EPSG-$(proj).tiff
-	./$^ $@
+	./$^ 2080x3148+2700+3400 $@
 
 # Overlays
 NZ6144-Torrent_Bay_to_Tonga-A4-overlay.png: NZ6144-Torrent_Bay_to_Tonga-A4.spec  NZ6144-EPSG-$(proj)-overlay.tiff
-	./$^ $@
+	./$^ 2080x3148+4700+5500 $@
 
 NZ614-Port_Motueka_to_Torrent_Bay-A4-overlay.png: NZ614-Port_Motueka_to_Torrent_Bay-A4.spec  NZ614-EPSG-$(proj)-overlay.tiff
-	./$^ $@
+	./$^ 2080x3148+2700+3400 $@
 
 
 %-overlay.tiff: %.tiff $(track_overlays)
 	convert $< $(patsubst %,% -composite,$(track_overlays)) $@
 
-
+  
 # Create a GTiff (with a SRS) from a kap file
 %-EPSG-$(proj).tiff: $(kappath)/%.kap
 	gdalwarp -of GTiff -co COMPRESS=LZW  -t_srs EPSG:$(proj) "$<" "$@"
