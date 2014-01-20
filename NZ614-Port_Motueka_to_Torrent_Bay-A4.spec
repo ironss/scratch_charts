@@ -1,12 +1,13 @@
 #! /bin/sh
 
 chart=$1
-name=$2
+size=$2
+name=$3
 
 convert \
    -size 2240x3350 xc:white \
    -density 300x300 \
-       "$chart[2080x3148+2700+3400]" -geometry +80+60    -composite \
+       "$chart[$size]" -geometry +80+60    -composite \
        "$chart[2080x60+2700+400]"    -geometry +80+0     -composite \
        "$chart[2080x60+2700+7950]"   -geometry +80+3208  -composite \
        "$chart[80x3148+330+3400]"    -geometry +0+60     -composite \

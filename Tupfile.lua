@@ -9,7 +9,7 @@ local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
 local specs = 
 {
    { name='NZ614-Port_Motueka_to_Torrent_Bay-A4', width=2080, height=3148, left=2700, top=3400 },
-   { name='NZ6144-Torrent_Bay_to_Tonga-A4', width=2080, height=3148, left=4700, top=5500 },
+   { name='NZ6144-Torrent_Bay_to_Tonga-A4',       width=2080, height=3148, left=4700, top=5500 },
 }
 
 local charts = {}
@@ -18,6 +18,7 @@ for _, spec in pairs(specs) do
    local chart = { name=chartname, filename=kapfiledir .. chartname .. '.kap', specs={} }
    spec.filename=spec.name .. '.spec'
    spec.chart = chart
+   spec.size = spec.width .. 'x' .. spec.height .. '+' .. spec.left .. '+' .. spec.top
    charts[chartname] = chart
 --   print(f, specname, chartname)
 end
@@ -66,7 +67,7 @@ for s, spec in pairs(specs) do
          tup.definerule{
             inputs={ spec.filename, pchart.filename },
             outputs={ scratch_chart.filename2 },
-            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename2
+            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. spec.size .. ' ' .. scratch_chart.filename2
          }
       end
    end
@@ -133,7 +134,7 @@ for c, pchart in pairs(scratch_charts) do
          tup.definerule{
             inputs={ pchart.filename, overlay_filename },
             outputs={ overlay_filename2 },
-            command='convert -density 3000x300 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
+            command='convert -density 300x300 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
          }
       end
    end
