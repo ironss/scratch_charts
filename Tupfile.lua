@@ -14,6 +14,7 @@ local specs =
    { name='NZ6144-Marahau_to_Torrent_Bay-A4'    , width=2080, height=3148, left=4400, top=7800 },
 }
 
+
 local charts = {}
 for _, spec in pairs(specs) do
    local chartname = spec.name:match('(NZ%d+)%-.+')
@@ -27,6 +28,7 @@ for _, spec in pairs(specs) do
    spec.size = spec.width .. 'x' .. spec.height .. '+' .. spec.left .. '+' .. spec.top
 --   print(spec.name, spec.filename, chart.name)
 end
+
 
 -- Full-sized projected charts for each chart and projection
 local projected_charts = {}
@@ -136,9 +138,13 @@ for c, pchart in pairs(scratch_charts) do
                      ptrack.filename..'/tracks.shx',
                    },
             outputs={ overlay_filename },
-            command='gdal_translate -of GTiff -co COMPRESS=LZW  -scale 0 255 0 0 ' .. pchart.filename .. ' ' .. overlay_filename .. ' && ' ..
-                    'gdal_rasterize -b 1 -burn 8 -l tracks ' .. ptrack.filename .. ' ' .. overlay_filename .. ' && ' ..
-                    'mogrify -morphology Erode Octagon -fill red -opaque black -transparent white ' .. overlay_filename
+            command=table.concat({
+               'gdal_translate', '-of GTiff', '-co COMPRESS=LZW', '-scale 0 255 0 0', pchart.filename, overlay_filename,
+               '&&',
+               'gdal_rasterize', '-b 1 -burn 8', '-l tracks', ptrack.filename, overlay_filename,
+               '&&',
+               'mogrify', '-morphology Erode Octagon', '-fill red', '-opaque black -transparent white', overlay_filename
+            }, ' ')
          }
          
          tup.definerule{
