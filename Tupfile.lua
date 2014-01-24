@@ -9,30 +9,37 @@ local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
 local specs = 
 {
    { name='NZ614-Port_Motueka_to_Torrent_Bay-A4', width=2080, height=3148, left=2700, top=3400 },
-   { name='NZ6144-Torrent_Bay_to_Tonga-A4',       width=2080, height=3148, left=4700, top=5500 },
+   { name='NZ6144-Torrent_Bay_to_Tonga-A4'      , width=2080, height=3148, left=4700, top=5500 },
+   { name='NZ6144-Tonga_to_Awaroa_Inlet-A4'     , width=2080, height=3148, left=4400, top=3400 },
+   { name='NZ6144-Marahau_to_Torrent_Bay-A4'    , width=2080, height=3148, left=4400, top=7800 },
 }
 
 local charts = {}
 for _, spec in pairs(specs) do
    local chartname = spec.name:match('(NZ%d+)%-.+')
-   local chart = { name=chartname, filename=kapfiledir .. chartname .. '.kap', specs={} }
+   if charts[chartname] == nil then
+      charts[chartname] = { name=chartname, filename=kapfiledir .. chartname .. '.kap', specs={} }
+   end
+   local chart = charts[chartname]
+   
    spec.filename=spec.name .. '.spec'
    spec.chart = chart
    spec.size = spec.width .. 'x' .. spec.height .. '+' .. spec.left .. '+' .. spec.top
-   charts[chartname] = chart
---   print(f, specname, chartname)
+--   print(spec.name, spec.filename, chart.name)
 end
 
--- Create projected charts for each chart and projection
+-- Full-sized projected charts for each chart and projection
 local projected_charts = {}
 for c, chart in pairs(charts) do
    for _, projection in pairs(projections) do
       local projected_chart_name = chart.name .. '-' .. projection
       local projected_chart_filename = projected_chart_name:gsub(':', '_') .. '.tiff'
-      local projected_chart = { name=projected_chart_name, chart=chart, projection=projection, filename=projected_chart_filename }
-      projected_charts[projected_chart_name] = projected_chart
---      print(projected_chart_filename)
-      
+      if projected_charts[projected_chart_name] == nil then
+         projected_charts[projected_chart_name] = { name=projected_chart_name, chart=chart, projection=projection, filename=projected_chart_filename }
+      end
+      local projected_chart = projected_charts[projected_chart_name]
+--      print(projected_chart.name, projected_chart.filename)
+
       tup.definerule{
          inputs=nil, 
          outputs={ projected_chart_filename },
@@ -42,12 +49,14 @@ for c, chart in pairs(charts) do
 end
 
 
--- For each scratch chart specification, find the projected charts associated 
+-- For each scratch chart specification, find the projected chart associated 
 -- with it, and generate a scratch chart
 local scratch_charts = {}
 for s, spec in pairs(specs) do
    for c, pchart in pairs(projected_charts) do
+--      print(spec.name, spec.chart.name, pchart.chart.name)
       if spec.chart == pchart.chart then
+--         print('**', spec.name, spec.chart.name, pchart.chart.name)
          local scratch_chart = {}
          scratch_chart.name = spec.name .. '-' ..  pchart.projection
          scratch_chart.spec = spec
@@ -56,7 +65,7 @@ for s, spec in pairs(specs) do
          scratch_chart.filename = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.tiff'
          scratch_chart.filename2 = spec.name .. '.png'
          scratch_charts[#scratch_charts+1] = scratch_chart
---         print(scratch_chart.filename)
+--         print(scratch_chart.name, scratch_chart.filename)
 
          tup.definerule{
             inputs={ pchart.filename },
