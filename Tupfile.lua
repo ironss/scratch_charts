@@ -2,8 +2,6 @@
 local specfiles=tup.glob('*.spec')
 local gpxfiles = tup.glob('gpx/*.gpx')
 local projections = { 'EPSG:2193' }
---local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
---local resolution = { horizontal=300, vertical=300 }
 local kapfiledir = '/usr/local/share/charts/LINZ/BSB_ROOT'
 local resolution = { horizontal=254, vertical=254 }
 local outdir = 'out'
@@ -108,7 +106,7 @@ for s, spec in pairs(specs) do
          tup.definerule{
             inputs={ pchart.filename },
             outputs={ scratch_chart.filename },
-            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left*254/300-200 .. ' ' .. spec.top*254/300-200 .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
+            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
          }
       end
    end
