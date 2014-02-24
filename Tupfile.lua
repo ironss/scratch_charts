@@ -42,30 +42,29 @@ local margin =
 }
 
 
--- Find all the scratch chart specifications, and the associated chart
 local specs = 
 {
-   { name='NZ614_01-Port_Motueka_to_Torrent_Bay'     , paper='A4P', left=2100, top=2700 },
-   { name='NZ614_01-Adele_Island_to_Separation_Point', paper='A4P', left=1500, top= 700 },
-   { name='NZ614_01-Marahau_to_Separation_Point'     , paper='A3P', left=1100, top= 800 },
-   { name='NZ6144_01-Torrent_Bay_to_Tonga'           , paper='A4P', left=3800, top=4500 },
-   { name='NZ6144_01-Tonga_to_Awaroa_Inlet'          , paper='A4P', left=3500, top=2700 },
-   { name='NZ6144_01-Marahau_to_Torrent_Bay'         , paper='A4P', left=3500, top=6400 },
-   { name='NZ6144_01-Pitt_Head_to_Awaroa_Inlet'      , paper='A3P', left=2800, top=3200 },
+   ['Port Motueka to Torrent Bay'     ]={ chart='NZ614' , panel='01', paper='A4P', left=2100, top=2700 },
+   ['Adele Island to Separation Point']={ chart='NZ614' , panel='01', paper='A4P', left=1500, top= 700 },
+   ['Marahau to Separation Point'     ]={ chart='NZ614' , panel='01', paper='A3P', left=1100, top= 800 },
+
+   ['Torrent Bay to Tonga Island'     ]={ chart='NZ6144', panel='01', paper='A4P', left=3800, top=4500 },
+   ['Tonga Island to Awaroa Inlet'    ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=2700 },
+   ['Marahua to Torrent Bay'          ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=6400 },
+   ['Pitt Head to Awaroa Inlet'       ]={ chart='NZ6144', panel='01', paper='A3P', left=2800, top=3200 },
 }
 
 
 local charts = {}
-for _, spec in pairs(specs) do
-   local chartname, panelname = spec.name:match('(NZ%d+)_(%d+)%-.+')
---   local basechartname = chartname:sub(1, -4)
---   local panelname = chartname:sub(-3, -1)
+for name, spec in pairs(specs) do
+   local chartname, panelname = spec.chart, spec.panel
    local filename = pathconcat(kapfiledir, chartname, chartname .. panelname .. '.KAP')
    if charts[chartname] == nil then
       charts[chartname] = { name=chartname..'_'..panelname, filename=filename, specs={} }
    end
    local chart = charts[chartname]
    
+   spec.name = chartname .. '_' .. panelname .. '-' .. name:gsub(' ', '_')
    spec.chart = chart
    spec.width = math.floor((paperspecs[spec.paper].width - margin.left - margin.right) * resolution.horizontal / 25.4)
    spec.height = math.floor((paperspecs[spec.paper].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
