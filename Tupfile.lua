@@ -112,11 +112,11 @@ for s, spec in pairs(specs) do
             command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename 
          }
 
-         tup.definerule{
-            inputs={ spec.filename, pchart.filename },
-            outputs={ scratch_chart.filename2 },
-            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. spec.size .. ' ' .. scratch_chart.filename2
-         }
+--         tup.definerule{
+--            inputs={ spec.filename, pchart.filename },
+--            outputs={ scratch_chart.filename2 },
+--            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. spec.size .. ' ' .. scratch_chart.filename2
+--         }
       end
    end
 end
