@@ -185,7 +185,14 @@ for c, pchart in pairs(scratch_charts) do
          tup.definerule{
             inputs={ pchart.filename, overlay_filename },
             outputs={ overlay_filename2 },
-            command='convert -density 254x254 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
+            command=table.concat({
+               'convert',
+               '-density ' .. resolution.horizontal..'x'..resolution.vertical,
+               pchart.filename,
+               overlay_filename,
+               '-composite',
+               overlay_filename2,
+            }, ' ')
          }
       end
    end
