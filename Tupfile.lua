@@ -1,5 +1,15 @@
+-- Generate scratch charts from LINZ NZMariner navigational charts
 
-local specfiles=tup.glob('*.spec')
+
+-- TODO: Add title block to overlayed charts: scratch-chart name, 
+--          chart name, panel name, date, scale, warning
+-- TODO: Add visual scale to vertical edge: 1 NM, 1km, etc
+-- TODO: Handle charts that are smaller than the paper size
+-- TODO: Add GPS fixes (time markers) to track
+-- TODO: Specify tracks by time, rather than by copying them
+--          into this subdirectory
+
+
 local gpxfiles = tup.glob('gpx/*.gpx')
 local projections = { 'EPSG:2193' }
 local kapfiledir = '/usr/local/share/charts/LINZ/BSB_ROOT'
@@ -7,6 +17,8 @@ local resolution = { horizontal=254, vertical=254 }
 local outdir = 'out'
 local tmpdir = 'tmp'
 
+
+-- Utility functions
 local function pathconcat(a, b, c)
    local path=''
    if a ~= nil then path = path .. a end
@@ -15,9 +27,6 @@ local function pathconcat(a, b, c)
    return path
 end
 
-
--- TODO: Add date-time label to overlayed charts.
--- TODO: Use new .KAP files from LINZ, rather than the 3rd-party ones.
 
 local paperspecs = 
 {
@@ -29,7 +38,7 @@ local paperspecs =
 
 local margin = 
 {
-   top=10, left=10, bottom=20, right=10,
+   top=10, left=10, bottom=10, right=10,
 }
 
 
