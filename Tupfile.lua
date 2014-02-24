@@ -3,7 +3,18 @@ local specfiles=tup.glob('*.spec')
 local gpxfiles = tup.glob('gpx/*.gpx')
 local projections = { 'EPSG:2193' }
 local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
+local outdir = 'out'
+local tmpdir = 'tmp'
 
+local function pathconcat(a, b)
+   return a .. '/' .. b
+end
+
+
+-- TODO: A4 charts on NZ614 and NZ6144
+-- TODO: A3 charts on NZ614 and NZ6144
+-- TODO: Tracks from latest trip to Abel Tasman
+-- TODO: Add date-time label to overlayed charts
 
 -- Find all the scratch chart specifications, and the associated chart
 local specs = 
@@ -35,7 +46,7 @@ local projected_charts = {}
 for c, chart in pairs(charts) do
    for _, projection in pairs(projections) do
       local projected_chart_name = chart.name .. '-' .. projection
-      local projected_chart_filename = projected_chart_name:gsub(':', '_') .. '.tiff'
+      local projected_chart_filename = pathconcat(outdir, projected_chart_name:gsub(':', '_') .. '.tiff')
       if projected_charts[projected_chart_name] == nil then
          projected_charts[projected_chart_name] = { name=projected_chart_name, chart=chart, projection=projection, filename=projected_chart_filename }
       end
@@ -64,8 +75,8 @@ for s, spec in pairs(specs) do
          scratch_chart.spec = spec
          scratch_chart.chart = pchart.chart
          scratch_chart.projection = pchart.projection
-         scratch_chart.filename = spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.tiff'
-         scratch_chart.filename2 = spec.name .. '.png'
+         scratch_chart.filename = pathconcat(outdir, spec.name .. '-' ..  pchart.projection:gsub(':', '_') .. '-scratch.tiff')
+         scratch_chart.filename2 = pathconcat(outdir, spec.name .. '.png')
          scratch_charts[#scratch_charts+1] = scratch_chart
 --         print(scratch_chart.name, scratch_chart.filename)
 
@@ -101,7 +112,7 @@ local projected_tracks = {}
 for p, projection in pairs(projections) do
    for t, track in pairs(tracks) do
       local projected_track_name = track.name .. '-' .. projection
-      local projected_track_filename = 'tmp/' .. track.name .. '-' .. projection:gsub(':', '_')
+      local projected_track_filename = pathconcat(tmpdir, track.name .. '-' .. projection:gsub(':', '_'))
       local projected_track = { name=projected_track_name, filename=projected_track_filename, track=track, projection=projection }
       projected_tracks[projected_track_name] = projected_track
 --      print(projected_track_name, projected_track_filename)
@@ -126,8 +137,8 @@ for c, pchart in pairs(scratch_charts) do
 --      print(pchart.projection, ptrack.projection)
       if pchart.projection == ptrack.projection then
          local overlay_name = ptrack.track.name .. '-' .. pchart.chart.name .. '-' .. pchart.projection
-         local overlay_filename = ptrack.track.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff'
-         local overlay_filename2 = pchart.spec.name .. '-' .. ptrack.track.time .. '.png'
+         local overlay_filename = pathconcat(outdir, ptrack.track.name .. '-' .. pchart.spec.name .. '-' .. pchart.projection:gsub(':', '_') .. '.tiff')
+         local overlay_filename2 = pathconcat(outdir, pchart.spec.name .. '-' .. ptrack.track.time .. '.png')
 --         print(overlay_name, overlay_filename, pchart.filename, ptrack.filename)
          
          tup.definerule{
