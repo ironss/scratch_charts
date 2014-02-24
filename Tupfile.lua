@@ -27,17 +27,20 @@ local paperspecs =
 
 local margin = 
 {
-   top=10, left=10, bottom=10, right=10,
+   top=10, left=10, bottom=20, right=10,
 }
 
 
 -- Find all the scratch chart specifications, and the associated chart
 local specs = 
 {
-   { name='NZ614-Port_Motueka_to_Torrent_Bay'   , paper='A4P', left=2700, top=3400 },
-   { name='NZ6144-Torrent_Bay_to_Tonga'         , paper='A4P', left=4700, top=5500 },
-   { name='NZ6144-Tonga_to_Awaroa_Inlet'        , paper='A4P', left=4400, top=3400 },
-   { name='NZ6144-Marahau_to_Torrent_Bay'       , paper='A4P', left=4400, top=7800 },
+   { name='NZ614-Port_Motueka_to_Torrent_Bay'     , paper='A4P', left=2700, top=3400 },
+   { name='NZ614-Adele_Island_to_Separation_Point', paper='A4P', left=2000, top=1100 },
+   { name='NZ614-Marahau_to_Separation_Point'     , paper='A3P', left=1500, top=1200 },
+   { name='NZ6144-Torrent_Bay_to_Tonga'           , paper='A4P', left=4700, top=5500 },
+   { name='NZ6144-Tonga_to_Awaroa_Inlet'          , paper='A4P', left=4400, top=3400 },
+   { name='NZ6144-Marahau_to_Torrent_Bay'         , paper='A4P', left=4400, top=7800 },
+   { name='NZ6144-Pitt_Head_to_Awaroa_Inlet'      , paper='A3P', left=3600, top=4000 },
 }
 
 
@@ -99,14 +102,8 @@ for s, spec in pairs(specs) do
          tup.definerule{
             inputs={ pchart.filename },
             outputs={ scratch_chart.filename },
-            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename 
+            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
          }
-
---         tup.definerule{
---            inputs={ spec.filename, pchart.filename },
---            outputs={ scratch_chart.filename2 },
---            command='./' .. spec.filename .. ' ' .. pchart.filename .. ' ' .. spec.size .. ' ' .. scratch_chart.filename2
---         }
       end
    end
 end
