@@ -17,13 +17,6 @@ end
 -- TODO: Tracks from latest trip to Abel Tasman
 -- TODO: Add date-time label to overlayed charts
 
--- Find all the scratch chart specifications, and the associated chart
-local papersizes = 
-{
-   { name='A4', width=297, height=210 },
-   { name='A3', width=420, height=297 },
-}
-
 local paperspecs = 
 {
    ['A4L']={ name='A4L', width=297, height=210 },
@@ -38,17 +31,13 @@ local margin =
 }
 
 
-local width_px = math.floor((paperspecs['A4P'].width - margin.left - margin.right) * resolution.horizontal / 25.4)
-local height_px = math.floor((paperspecs['A4P'].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
-
-print(width_px, height_px)
-
+-- Find all the scratch chart specifications, and the associated chart
 local specs = 
 {
-   { name='NZ614-Port_Motueka_to_Torrent_Bay-A4', width=2080, height=3148, left=2700, top=3400 },
-   { name='NZ6144-Torrent_Bay_to_Tonga-A4'      , width=2080, height=3148, left=4700, top=5500 },
-   { name='NZ6144-Tonga_to_Awaroa_Inlet-A4'     , width=2080, height=3148, left=4400, top=3400 },
-   { name='NZ6144-Marahau_to_Torrent_Bay-A4'    , width=2080, height=3148, left=4400, top=7800 },
+   { name='NZ614-Port_Motueka_to_Torrent_Bay'   , paper='A4P', left=2700, top=3400 },
+   { name='NZ6144-Torrent_Bay_to_Tonga'         , paper='A4P', left=4700, top=5500 },
+   { name='NZ6144-Tonga_to_Awaroa_Inlet'        , paper='A4P', left=4400, top=3400 },
+   { name='NZ6144-Marahau_to_Torrent_Bay'       , paper='A4P', left=4400, top=7800 },
 }
 
 
@@ -62,7 +51,8 @@ for _, spec in pairs(specs) do
    
    spec.filename=spec.name .. '.spec'
    spec.chart = chart
-   spec.size = spec.width .. 'x' .. spec.height .. '+' .. spec.left .. '+' .. spec.top
+   spec.width = math.floor((paperspecs[spec.paper].width - margin.left - margin.right) * resolution.horizontal / 25.4)
+   spec.height = math.floor((paperspecs[spec.paper].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
 --   print(spec.name, spec.filename, chart.name)
 end
 
@@ -151,7 +141,14 @@ for p, projection in pairs(projections) do
                    projected_track_filename..'/tracks.shp',
                    projected_track_filename..'/tracks.shx',
                  },
-         command='ogr2ogr -f "ESRI Shapefile" -t_srs ' .. projection .. ' ' .. projected_track_filename .. ' ' .. track.filename .. ' tracks'
+         command=table.concat({
+            'ogr2ogr',
+            '-f "ESRI Shapefile"',
+            '-t_srs ' .. projection,
+            projected_track_filename,
+            track.filename,
+            'tracks',
+         }, ' ')
       }
    end
 end
