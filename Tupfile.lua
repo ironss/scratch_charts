@@ -12,10 +12,8 @@ local function pathconcat(a, b)
 end
 
 
--- TODO: A4 charts on NZ614 and NZ6144
--- TODO: A3 charts on NZ614 and NZ6144
--- TODO: Tracks from latest trip to Abel Tasman
--- TODO: Add date-time label to overlayed charts
+-- TODO: Add date-time label to overlayed charts.
+-- TODO: Use new .KAP files from LINZ, rather than the 3rd-party ones.
 
 local paperspecs = 
 {
@@ -52,11 +50,10 @@ for _, spec in pairs(specs) do
    end
    local chart = charts[chartname]
    
-   spec.filename=spec.name .. '.spec'
    spec.chart = chart
    spec.width = math.floor((paperspecs[spec.paper].width - margin.left - margin.right) * resolution.horizontal / 25.4)
    spec.height = math.floor((paperspecs[spec.paper].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
---   print(spec.name, spec.filename, chart.name)
+--   print(spec.name, chart.name)
 end
 
 
