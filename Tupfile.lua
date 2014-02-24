@@ -2,13 +2,19 @@
 local specfiles=tup.glob('*.spec')
 local gpxfiles = tup.glob('gpx/*.gpx')
 local projections = { 'EPSG:2193' }
-local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
-local resolution = { horizontal=300, vertical=300 }
+--local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
+--local resolution = { horizontal=300, vertical=300 }
+local kapfiledir = '/usr/local/share/charts/LINZ/BSB_ROOT'
+local resolution = { horizontal=254, vertical=254 }
 local outdir = 'out'
 local tmpdir = 'tmp'
 
-local function pathconcat(a, b)
-   return a .. '/' .. b
+local function pathconcat(a, b, c)
+   local path=''
+   if a ~= nil then path = path .. a end
+   if b ~= nil then path = path .. '/' .. b end
+   if c ~= nil then path = path .. '/' .. c end 
+   return path
 end
 
 
@@ -32,28 +38,31 @@ local margin =
 -- Find all the scratch chart specifications, and the associated chart
 local specs = 
 {
-   { name='NZ614-Port_Motueka_to_Torrent_Bay'     , paper='A4P', left=2700, top=3400 },
-   { name='NZ614-Adele_Island_to_Separation_Point', paper='A4P', left=2000, top=1100 },
-   { name='NZ614-Marahau_to_Separation_Point'     , paper='A3P', left=1500, top=1200 },
-   { name='NZ6144-Torrent_Bay_to_Tonga'           , paper='A4P', left=4700, top=5500 },
-   { name='NZ6144-Tonga_to_Awaroa_Inlet'          , paper='A4P', left=4400, top=3400 },
-   { name='NZ6144-Marahau_to_Torrent_Bay'         , paper='A4P', left=4400, top=7800 },
-   { name='NZ6144-Pitt_Head_to_Awaroa_Inlet'      , paper='A3P', left=3600, top=4000 },
+   { name='NZ614_01-Port_Motueka_to_Torrent_Bay'     , paper='A4P', left=2100, top=2700 },
+   { name='NZ614_01-Adele_Island_to_Separation_Point', paper='A4P', left=1500, top= 700 },
+   { name='NZ614_01-Marahau_to_Separation_Point'     , paper='A3P', left=1100, top= 800 },
+   { name='NZ6144_01-Torrent_Bay_to_Tonga'           , paper='A4P', left=3800, top=4500 },
+   { name='NZ6144_01-Tonga_to_Awaroa_Inlet'          , paper='A4P', left=3500, top=2700 },
+   { name='NZ6144_01-Marahau_to_Torrent_Bay'         , paper='A4P', left=3500, top=6400 },
+   { name='NZ6144_01-Pitt_Head_to_Awaroa_Inlet'      , paper='A3P', left=2800, top=3200 },
 }
 
 
 local charts = {}
 for _, spec in pairs(specs) do
-   local chartname = spec.name:match('(NZ%d+)%-.+')
+   local chartname, panelname = spec.name:match('(NZ%d+)_(%d+)%-.+')
+--   local basechartname = chartname:sub(1, -4)
+--   local panelname = chartname:sub(-3, -1)
+   local filename = pathconcat(kapfiledir, chartname, chartname .. panelname .. '.KAP')
    if charts[chartname] == nil then
-      charts[chartname] = { name=chartname, filename=kapfiledir .. chartname .. '.kap', specs={} }
+      charts[chartname] = { name=chartname..'_'..panelname, filename=filename, specs={} }
    end
    local chart = charts[chartname]
    
    spec.chart = chart
    spec.width = math.floor((paperspecs[spec.paper].width - margin.left - margin.right) * resolution.horizontal / 25.4)
    spec.height = math.floor((paperspecs[spec.paper].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
---   print(spec.name, chart.name)
+   --print(spec.name, chart.name, chart.filename)
 end
 
 
@@ -99,7 +108,7 @@ for s, spec in pairs(specs) do
          tup.definerule{
             inputs={ pchart.filename },
             outputs={ scratch_chart.filename },
-            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
+            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left*254/300-200 .. ' ' .. spec.top*254/300-200 .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
          }
       end
    end
@@ -167,9 +176,9 @@ for c, pchart in pairs(scratch_charts) do
                    },
             outputs={ overlay_filename },
             command=table.concat({
-               'gdal_translate', '-of GTiff', '-co COMPRESS=LZW', '-scale 0 255 0 0', pchart.filename, overlay_filename,
+               'gdal_translate', '-of GTiff', '-co COMPRESS=LZW', '-scale 0 255 1 1', pchart.filename, overlay_filename,
                '&&',
-               'gdal_rasterize', '-b 1 -burn 8', '-l tracks', ptrack.filename, overlay_filename,
+               'gdal_rasterize', '-b 1 -burn 16', '-l tracks', ptrack.filename, overlay_filename,
                '&&',
                'mogrify', '-morphology Erode Octagon', '-fill red', '-opaque black -transparent white', overlay_filename
             }, ' ')
@@ -178,7 +187,7 @@ for c, pchart in pairs(scratch_charts) do
          tup.definerule{
             inputs={ pchart.filename, overlay_filename },
             outputs={ overlay_filename2 },
-            command='convert -density 300x300 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
+            command='convert -density 254x254 ' .. pchart.filename .. ' ' .. overlay_filename .. ' -composite ' .. overlay_filename2
          }
       end
    end
