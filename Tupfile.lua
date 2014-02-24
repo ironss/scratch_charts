@@ -137,14 +137,14 @@ local projected_tracks = {}
 for p, projection in pairs(projections) do
    for t, track in pairs(tracks) do
       local projected_track_name = track.name .. '-' .. projection
-      local projected_track_filename = pathconcat(tmpdir, track.name .. '-' .. projection:gsub(':', '_'))
+      local projected_track_filename = pathconcat(tmpdir, track.name .. '-' .. projection:gsub(':', '_'), 'track')
       local projected_track = { name=projected_track_name, filename=projected_track_filename, track=track, projection=projection }
       projected_tracks[projected_track_name] = projected_track
 --      print(projected_track_name, projected_track_filename)
 
       tup.definerule{
          inputs={ track.filename },
-         outputs={ --projected_track_filename, 
+         outputs={
                    projected_track_filename..'/tracks.dbf', 
                    projected_track_filename..'/tracks.prj', 
                    projected_track_filename..'/tracks.shp',
@@ -157,6 +157,27 @@ for p, projection in pairs(projections) do
             projected_track_filename,
             track.filename,
             'tracks',
+         }, ' ')
+      }
+   end
+end
+
+
+-- For each chart and track, calculate position fixes at equal time intervals
+for c, pchart in pairs(scratch_charts) do
+   for t, track in pairs(tracks) do
+      local projected_chart_fixes_filename = pathconcat(tmpdir, pchart.name..'-'..track.name..'.gpx')
+      print(pchart.name, track.name, projected_chart_fixes_filename)
+      tup.definerule{
+         inputs={ track.filename },
+         outputs={
+                   projected_chart_fixes_filename, 
+                 },
+         command=table.concat({
+            '/home/ironss/projects/gpx-calculator/create-track-markers-2.lua',
+            track.filename,
+            5*60, -- Every 5 minutes
+            projected_chart_fixes_filename
          }, ' ')
       }
    end
