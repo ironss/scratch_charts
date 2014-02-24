@@ -3,6 +3,7 @@ local specfiles=tup.glob('*.spec')
 local gpxfiles = tup.glob('gpx/*.gpx')
 local projections = { 'EPSG:2193' }
 local kapfiledir = '/usr/local/share/charts/LINZ/NewZealand/'
+local resolution = { horizontal=300, vertical=300 }
 local outdir = 'out'
 local tmpdir = 'tmp'
 
@@ -17,6 +18,31 @@ end
 -- TODO: Add date-time label to overlayed charts
 
 -- Find all the scratch chart specifications, and the associated chart
+local papersizes = 
+{
+   { name='A4', width=297, height=210 },
+   { name='A3', width=420, height=297 },
+}
+
+local paperspecs = 
+{
+   ['A4L']={ name='A4L', width=297, height=210 },
+   ['A4P']={ name='A4P', width=210, height=297 },
+   ['A3L']={ name='A3L', width=420, height=297 },
+   ['A3P']={ name='A4P', width=297, height=420 },
+}
+
+local margin = 
+{
+   top=10, left=10, bottom=10, right=10,
+}
+
+
+local width_px = math.floor((paperspecs['A4P'].width - margin.left - margin.right) * resolution.horizontal / 25.4)
+local height_px = math.floor((paperspecs['A4P'].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
+
+print(width_px, height_px)
+
 local specs = 
 {
    { name='NZ614-Port_Motueka_to_Torrent_Bay-A4', width=2080, height=3148, left=2700, top=3400 },
