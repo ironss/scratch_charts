@@ -42,6 +42,8 @@ local margin =
 }
 
 
+
+
 local specs = 
 {
    ['Port Motueka to Torrent Bay'     ]={ chart='NZ614' , panel='01', paper='A4P', left=2100, top=2700 },
@@ -228,6 +230,7 @@ for c, pchart in pairs(scratch_charts) do
             outputs={ overlay_filename2 },
             command=table.concat({
                'convert',
+--               '-units PixelsPerInch',
                '-density ' .. resolution.horizontal..'x'..resolution.vertical,
                pchart.filename,
                overlay_filename,
