@@ -96,10 +96,12 @@ function kap_dir(root)
 end
 
 
-charts = kap_dir(kapfiledir)
+local charts = kap_dir(kapfiledir)
 for _, chart in pairs(charts) do
 --   c = chart:path()
    print(chart:path(), chart:name(), chart:width(), chart:height(), chart:resolution(), chart:scale(), 
       chart:geodetic_datum(), chart:projection(), chart:sounding_unit(), chart:sounding_datum(), chart:dx(), chart:dy() )
 end
+
+return charts
 
