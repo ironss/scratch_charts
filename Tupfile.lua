@@ -52,23 +52,26 @@ local specs =
    ['Tonga Island to Awaroa Inlet'    ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=2700 },
    ['Marahua to Torrent Bay'          ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=6400 },
    ['Pitt Head to Awaroa Inlet'       ]={ chart='NZ6144', panel='01', paper='A3P', left=2800, top=3200 },
+   ['Port Motueka'                    ]={ chart='NZ614', panel='02', paper='A4L', left=0, top=0, is_small=true },
 }
 
 
 local charts = {}
 for name, spec in pairs(specs) do
    local chartname, panelname = spec.chart, spec.panel
-   local filename = pathconcat(kapfiledir, chartname, chartname .. panelname .. '.KAP')
-   if charts[chartname] == nil then
-      charts[chartname] = { name=chartname..'_'..panelname, filename=filename, specs={} }
+   local chartfullname = chartname .. panelname
+   local filename = pathconcat(kapfiledir, chartname, chartfullname .. '.KAP')
+   if charts[chartfullname] == nil then
+      charts[chartfullname] = { name=chartname..'_'..panelname, filename=filename, specs={} }
    end
-   local chart = charts[chartname]
+   local chart = charts[chartfullname]
+   chart.is_small = spec.is_small
    
    spec.name = chartname .. '_' .. panelname .. '-' .. name:gsub(' ', '_')
    spec.chart = chart
    spec.width = math.floor((paperspecs[spec.paper].width - margin.left - margin.right) * resolution.horizontal / 25.4)
    spec.height = math.floor((paperspecs[spec.paper].height - margin.top - margin.bottom)* resolution.vertical / 25.4)
-   --print(spec.name, chart.name, chart.filename)
+--   print(spec.name, chart.name, chart.filename)
 end
 
 
@@ -111,11 +114,19 @@ for s, spec in pairs(specs) do
          scratch_charts[#scratch_charts+1] = scratch_chart
 --         print(scratch_chart.name, scratch_chart.filename)
 
-         tup.definerule{
-            inputs={ pchart.filename },
-            outputs={ scratch_chart.filename },
-            command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
-         }
+         if pchart.chart.is_small then
+            tup.definerule{
+               inputs={ pchart.filename },
+               outputs={ scratch_chart.filename },
+               command='gdal_translate -of GTiff -co COMPRESS=LZW ' .. pchart.filename .. ' ' .. scratch_chart.filename
+            }
+         else
+            tup.definerule{
+               inputs={ pchart.filename },
+               outputs={ scratch_chart.filename },
+               command='gdal_translate -of GTiff -co COMPRESS=LZW -srcwin ' .. spec.left .. ' ' .. spec.top .. ' ' .. spec.width .. ' ' .. spec.height .. ' ' .. pchart.filename .. ' ' .. scratch_chart.filename
+            }
+         end
       end
    end
 end
@@ -167,7 +178,7 @@ end
 for c, pchart in pairs(scratch_charts) do
    for t, track in pairs(tracks) do
       local projected_chart_fixes_filename = pathconcat(tmpdir, pchart.name..'-'..track.name..'.gpx')
-      print(pchart.name, track.name, projected_chart_fixes_filename)
+--      print(pchart.name, track.name, projected_chart_fixes_filename)
       tup.definerule{
          inputs={ track.filename },
          outputs={
