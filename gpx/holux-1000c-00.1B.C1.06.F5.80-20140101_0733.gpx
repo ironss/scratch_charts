@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<gpx xmlns="http://www.topografix.com/GPX/1/0"
+ creator="BT747 V2.X.1975" version="1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
+<name>GPS-20140101_0733</name><trk><trkseg>
+<trkpt lat="-43.493927" lon="172.579330" >
+<time>2014-01-01T07:33:04.000Z</time>
+<speed>0.0200</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493938" lon="172.579300" >
+<time>2014-01-01T07:33:06.000Z</time>
+<speed>0.0500</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493931" lon="172.579285" >
+<time>2014-01-01T07:33:08.000Z</time>
+<speed>0.0500</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493916" lon="172.579269" >
+<time>2014-01-01T07:33:10.000Z</time>
+<speed>0.0700</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493908" lon="172.579285" >
+<time>2014-01-01T07:33:12.000Z</time>
+<speed>0.0200</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493919" lon="172.579285" >
+<time>2014-01-01T07:33:14.000Z</time>
+<speed>0.0300</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493912" lon="172.579269" >
+<time>2014-01-01T07:33:16.000Z</time>
+<speed>0.0100</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493908" lon="172.579269" >
+<time>2014-01-01T07:33:18.000Z</time>
+<speed>0.0400</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493904" lon="172.579269" >
+<time>2014-01-01T07:33:20.000Z</time>
+<speed>0.0100</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493900" lon="172.579269" >
+<time>2014-01-01T07:33:22.000Z</time>
+<speed>0.0400</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493896" lon="172.579269" >
+<time>2014-01-01T07:33:24.000Z</time>
+<speed>0.0200</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493896" lon="172.579269" >
+<time>2014-01-01T07:33:26.000Z</time>
+<speed>0.0500</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493893" lon="172.579269" >
+<time>2014-01-01T07:33:28.000Z</time>
+<speed>0.0800</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493885" lon="172.579269" >
+<time>2014-01-01T07:33:30.000Z</time>
+<speed>0.0800</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493885" lon="172.579269" >
+<time>2014-01-01T07:33:32.000Z</time>
+<speed>0.0900</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493877" lon="172.579254" >
+<time>2014-01-01T07:33:34.000Z</time>
+<speed>0.1300</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493870" lon="172.579254" >
+<time>2014-01-01T07:33:36.000Z</time>
+<speed>0.0800</speed>
+<type>T</type>
+</trkpt>
+<trkpt lat="-43.493870" lon="172.579254" >
+<time>2014-01-01T07:33:38.000Z</time>
+<speed>0.0800</speed>
+<type>T</type>
+</trkpt>
+</trkseg></trk>
+</gpx>
