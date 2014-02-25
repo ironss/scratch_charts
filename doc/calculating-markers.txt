@@ -1,0 +1,48 @@
+To add fix markers to a chart
+=============================
+
+* calculate how far apart markers should be, considering
+  * the pixel resolution of the chart
+  * the distance between chart and viewer
+
+* From the track, calculate the major trackpoints, choosing them to be
+  * on rounded time value
+  * not too close together
+
+* Project the trackpoints onto the chart coordinate system
+  * keep the label (eg. time, speed, distance)
+
+* Draw the fix marker symbol and label text onto the chart
+
+
+To calculate size of 1 NM in pixels
+===================================
+
+On a Mercator projection chart, the scale is not fixed. However, for the
+small scratch charts, it is sufficient to give the scale at the
+centre of the chart.
+
+* Find the midpoint of the chart in projected coordinates.
+
+   midx_px = chart.width_px / 2
+   midy_px = chart.height_px / 2
+   
+   x0 = chart.origin.x + midx_px
+   y0 = chart.origin.y + midy_px
+
+* Find the coordinates of the midpoint
+   
+   long0, lat0 = gdal_transform(s_srs=<chart>, t_srs=EPS:4326, x0, y0)
+
+* Find the coordinates of the ends of a vertical line, 1 NM in length. 1 NM
+  is 1/60 of a degree
+
+     long1, lat1 = long0, lat0 - 0.5*1/60
+     long2, lat2 = long0, lat0 + 0.5*1/60
+
+* Find the projected coordinates of the endpoints of the measured mile.
+
+     x1, y1 = gdal_transform(s_srs=EPSG:4326, t_srs=<chart>, long1, lat1)
+     x2, y2 = gdal_transform(s_srs=EPSG:4326, t_srs=<chart>, long2, lat2)
+
+* Draw the line on the chart.
