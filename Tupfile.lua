@@ -52,6 +52,7 @@ local specs =
    ['Tonga Island to Awaroa Inlet'    ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=2700 },
    ['Marahua to Torrent Bay'          ]={ chart='NZ6144', panel='01', paper='A4P', left=3500, top=6400 },
    ['Pitt Head to Awaroa Inlet'       ]={ chart='NZ6144', panel='01', paper='A3P', left=2800, top=3200 },
+
    ['Port Motueka'                    ]={ chart='NZ614', panel='02', paper='A4L', left=0, top=0, is_small=true },
 }
 
